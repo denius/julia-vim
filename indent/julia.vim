@@ -387,5 +387,13 @@ function GetJuliaIndent()
   " Decrease indentation for each closed block in the current line
   let ind -= shiftwidth() * num_closed_blocks
 
+  " Indent in multiline assignment after '=\n'
+  if v:lnum > 0
+    let prevline = getline(line('.') - 1)
+    if match(prevline, '\v[^<>=!]\=$') >= 0
+      let ind += shiftwidth()
+    endif
+  end
+
   return ind
 endfunction
